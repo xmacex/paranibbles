@@ -2,7 +2,7 @@
 
 Paranibbles for paradiddles.
 
-![](paradiddles.gif)
+![](paranibbles.gif)
 
 Paradiddles are drumming patterns, e.g. `RLRR LRLL`. Nibbles are half a byte, 4 bits. With *paranibbles* you set the first four bits as a number, and the script extends this to a full byte.
 
