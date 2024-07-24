@@ -40,13 +40,18 @@ end
 function init_params()
    params:add_number('midi_dev', "midi dev", 1, 16, 3)
    params:set_action('midi_dev', function(v) midi_dev=midi.connect(v) end)
-   params:add_number('midi_ch', "midi ch", 1, 16)
+   params:add_number('midi_ch', "midi ch", 1, 16, 1)
 
    params:add_number('nibble', "nibble", 0, 2^4-1, 4)
-   params:set_action('nibble', function() giggle:settable(nibbleToParadiddle(params:get('nibble'))) end)
+   params:set_action('nibble', function()
+			giggle:settable(nibbleToParadiddle(params:get('nibble')))
+   end)
 
-   params:add_number('0', "sound 0", 0, 127, 63)
-   params:add_number('1', "sound 1", 0, 127, 64)
+   -- params:add_number('0', "sound 0", 0, 127, 63)
+   params:add_control('0', "sound 0", controlspec.MIDINOTE)
+   -- params:add_number('1', "sound 1", 0, 127, 64)
+   params:add_control('1', "sound 1", controlspec.MIDINOTE)
+   params:delta('1', 1)
 end
 
 -- From https://stackoverflow.com/a/9080080
@@ -136,4 +141,11 @@ function draw_music()
      screen.font_size(15)
    end
    screen.text('*')
+end
+
+function enc(k, d)
+   if k == 2 then
+      -- FIXME: argh becomes integer at max value.
+      params:delta('nibble', math.floor(d))
+   end
 end
