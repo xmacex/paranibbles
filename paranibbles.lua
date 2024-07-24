@@ -52,6 +52,10 @@ function init_params()
    -- params:add_number('1', "sound 1", 0, 127, 64)
    params:add_control('1', "sound 1", controlspec.MIDINOTE)
    params:delta('1', 1)
+   params:add_number('accent_rot', "accent rotate", 0, 7)
+   params:set_action('accent_rot', function(v)
+			accents = s(er.gen(3, 8, v))
+   end)
 end
 
 -- From https://stackoverflow.com/a/9080080
@@ -99,9 +103,9 @@ function tick()
       current_value = giggle()
       accent = accents()
       if accent then
-        vel = 127
+        vel = 120
       else
-        vel = 100
+        vel = 64
       end
       if current_value == 0 then
          midi_dev:note_on(params:get('0'), vel, params:get('midi_ch'))
@@ -146,6 +150,10 @@ end
 function enc(k, d)
    if k == 2 then
       -- FIXME: argh becomes integer at max value.
-      params:delta('nibble', math.floor(d))
+      params:delta('nibble', d)
+   end
+
+   if k == 3 then
+      params:delta('accent_rot', d)
    end
 end
