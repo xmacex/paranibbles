@@ -1,6 +1,11 @@
--- paranibbles
+--                        nibble ↑
 --
--- 0100 1011
+--     paranibbles
+--     0100 1011
+--
+--
+--                 accent
+--                 rot ↓  force ↓
 --
 -- by xmacex
 -- inspired by oskar's video
