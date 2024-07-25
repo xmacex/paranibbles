@@ -38,7 +38,7 @@ function init()
 end
 
 function init_params()
-   params:add_number('midi_dev', "midi dev", 1, 16, 1)
+   params:add_number('midi_dev', "midi dev", 1, 16, 1, function(param) return param:get()..": "..midi_dev.name end)
    params:set_action('midi_dev', function(v) midi_dev=midi.connect(v) end)
    params:add_number('midi_ch', "midi ch", 1, 16, 1)
 
