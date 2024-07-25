@@ -15,8 +15,11 @@ A small personal script for exploring paradiddles. Maybe you too will enjoy it. 
 
 ### Documentation
 
-- encoder 2: set the first nibble
-- encoder 3: rotate accent pattern
+- encoder 1: set the first nibble
+- encoder 2: rotate accent pattern
+- encoder 3: change accent force
+
+Accent force is the difference between accented and non-accented notes, deviating up and down from mid-velocity respectively.
 
 Set where to send and what to send in params.
 
