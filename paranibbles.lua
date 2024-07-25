@@ -10,13 +10,8 @@
 er = require 'er'
 s  = require 'sequins'
 
-
-if not tab then
-   tab = require("tab")
-end
-
-screen.width = 128
-screen.height = 64
+WIDTH = 128
+HEIGHT = 64
 
 nibble  = 4
 giggle  = nil
@@ -29,16 +24,15 @@ function init()
    giggle  = s(nibbleToParadiddle(params:get('nibble')))
    accents = s(er.gen(3, 8))
 
-   params:set('clock_tempo', 145)
+   params:set('clock_tempo', 145) -- how I (drum)roll :)
 
    midi_dev = midi.connect(params:get('midi_dev'))
 
-   -- redraw_clock = clock.run(redraw)
-   ui_clock = clock.run(tick)
+   main_clock = clock.run(tick) -- what was the UI redesign recently?
 end
 
 function init_params()
-   params:add_number('midi_dev', "midi dev", 1, 16, 3)
+   params:add_number('midi_dev', "midi dev", 1, 16, 1)
    params:set_action('midi_dev', function(v) midi_dev=midi.connect(v) end)
    params:add_number('midi_ch', "midi ch", 1, 16, 1)
 
@@ -136,24 +130,24 @@ function draw_nibble()
 end
 
 function draw_music()
-   -- screen.move(screen.width/2, screen.height/2-(screen.height/4)*2*current_value)
-   screen.move(screen.width/2, screen.height - screen.height*0.8*current_value)
+   -- screen.move(WIDTH/2, HEIGHT/2-(HEIGHT/4)*2*current_value)
+   screen.move(WIDTH/2, HEIGHT - HEIGHT*0.6*current_value)
    screen.level(10)
    if accent then
-     screen.font_size(20)
+     screen.font_size(40)
    else
-     screen.font_size(15)
+     screen.font_size(20)
    end
-   screen.text('*')
+   screen.text_center('*')
 end
 
 function enc(k, d)
-   if k == 2 then
+   if k == 1 then
       -- FIXME: argh becomes integer at max value.
       params:delta('nibble', d)
-   end
-
-   if k == 3 then
+   elseif k == 2 then
       params:delta('accent_rot', d)
+   elseif k == 3 then
+      params:delta('accent_str', d)
    end
 end
