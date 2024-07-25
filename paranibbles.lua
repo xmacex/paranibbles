@@ -17,6 +17,7 @@ nibble  = 4
 giggle  = nil
 accents = nil
 accent  = false
+vel     = 64
 current_value = "000"
 
 function init()
@@ -50,6 +51,7 @@ function init_params()
    params:set_action('accent_rot', function(v)
 			accents = s(er.gen(3, 8, v))
    end)
+   params:add_number('accent_force', 'accent force', 1, 63, 16)
 end
 
 -- From https://stackoverflow.com/a/9080080
@@ -97,10 +99,10 @@ function tick()
       current_value = giggle()
       accent = accents()
       if accent then
-        vel = 120
+	 vel = 64 - params:get('accent_force')
       else
-        vel = 64
-      end
+	 vel = 64 + params:get('accent_force')
+	 end
       if current_value == 0 then
          midi_dev:note_on(params:get('0'), vel, params:get('midi_ch'))
       else
@@ -133,11 +135,7 @@ function draw_music()
    -- screen.move(WIDTH/2, HEIGHT/2-(HEIGHT/4)*2*current_value)
    screen.move(WIDTH/2, HEIGHT - HEIGHT*0.6*current_value)
    screen.level(10)
-   if accent then
-     screen.font_size(40)
-   else
-     screen.font_size(20)
-   end
+   screen.font_size(math.max(vel/3, 8))
    screen.text_center('*')
 end
 
@@ -148,6 +146,6 @@ function enc(k, d)
    elseif k == 2 then
       params:delta('accent_rot', d)
    elseif k == 3 then
-      params:delta('accent_str', d)
+      params:delta('accent_force', d)
    end
 end
