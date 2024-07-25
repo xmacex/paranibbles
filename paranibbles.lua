@@ -56,7 +56,7 @@ function init_params()
    params:set_action('accent_rot', function(v)
 			accents = s(er.gen(3, 8, v))
    end)
-   params:add_number('accent_force', 'accent force', 1, 63, 16)
+   params:add_number('accent_force', 'accent force', 0, 63, 16)
 end
 
 -- From https://stackoverflow.com/a/9080080
