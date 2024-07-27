@@ -42,9 +42,9 @@ function init_params()
    params:set_action('midi_dev', function(v) midi_dev=midi.connect(v) end)
    params:add_number('midi_ch', "midi ch", 1, 16, 1)
 
-   params:add_number('nibble', "nibble", 0, 2^4-1, 4)
-   params:set_action('nibble', function()
-			giggle:settable(nibbleToParadiddle(params:get('nibble')))
+   params:add_number('nibble', "nibble", 0, 15, 4)
+   params:set_action('nibble', function(v)
+			giggle:settable(nibbleToParadiddle(v))
    end)
 
    -- params:add_number('0', "sound 0", 0, 127, 63)
