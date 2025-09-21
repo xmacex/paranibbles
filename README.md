@@ -6,8 +6,6 @@ Paranibbles for paradiddles.
 
 Paradiddles are drumming patterns, e.g. `RLRR LRLL`. Nibbles are half a byte, 4 bits. With *paranibbles* you set the first four bits as a number, and the script extends this to a full byte.
 
-A small personal script for exploring paradiddles. Maybe you too will enjoy it. Expect bugs and stuck notes.
-
 ## Requirements
 
 - norns

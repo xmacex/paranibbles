@@ -18,11 +18,12 @@ s  = require 'sequins'
 WIDTH = 128
 HEIGHT = 64
 
-nibble  = 4
-giggle  = nil
-accents = nil
-accent  = false
-vel     = 64
+nibble        = 4
+giggle        = nil
+accents       = nil
+accent        = false
+vel           = 64
+len_divs      = {"full", "half", "1/4th", "1/8th", "1/16th"}
 current_value = "000"
 
 function init()
@@ -47,16 +48,15 @@ function init_params()
 			giggle:settable(nibbleToParadiddle(v))
    end)
 
-   -- params:add_number('0', "sound 0", 0, 127, 63)
    params:add_control('0', "sound 0", controlspec.MIDINOTE)
-   -- params:add_number('1', "sound 1", 0, 127, 64)
    params:add_control('1', "sound 1", controlspec.MIDINOTE)
    params:delta('1', 1)
    params:add_number('accent_rot', "accent rotate", 0, 7)
    params:set_action('accent_rot', function(v)
 			accents = s(er.gen(3, 8, v))
    end)
-   params:add_number('accent_force', 'accent force', 0, 63, 16)
+   params:add_number('accent_force', "accent force", 0, 63, 16)
+   params:add_option('note_len_div', "length div", len_divs, 5)
 end
 
 -- From https://stackoverflow.com/a/9080080
@@ -110,8 +110,16 @@ function tick()
 	 end
       if current_value == 0 then
          midi_dev:note_on(params:get('0'), vel, params:get('midi_ch'))
+         clock.run(function()
+                       clock.sync(1 / (1 << params:get('note_len_div')-1))
+                       midi_dev:note_off(params:get('0'), 0, params:get('midi_ch'))
+                   end)
       else
          midi_dev:note_on(params:get('1'), vel, params:get('midi_ch'))
+         clock.run(function()
+                       clock.sync(1 / (1 << params:get('note_len_div')-1))
+                       midi_dev:note_off(params:get('1'), 0, params:get('midi_ch'))
+                   end)
       end
       redraw()
    end
